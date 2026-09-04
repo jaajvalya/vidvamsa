@@ -1,0 +1,83 @@
+# ─────────────────────────────────────────────
+#  Vidvamsa — Team Configuration
+#  config/team.yml
+#  Runtime mirror: src/js/config.js → TEAM
+# ─────────────────────────────────────────────
+
+disciplines:
+  - id: "designers"
+    title: "Designers"
+    icon: "pen-tool"
+    tagline: "Crafting experiences that delight"
+    description: >
+      Our UX/UI Designers combine aesthetics with empathy — conducting
+      user research, building prototypes, and delivering pixel-perfect
+      interfaces that drive adoption and satisfaction.
+    skills:
+      - "User Research & Personas"
+      - "Wireframing & Prototyping"
+      - "UI Design Systems"
+      - "Accessibility (WCAG 2.2)"
+      - "Design Ops"
+    tools:
+      - "Figma"
+      - "FigJam"
+      - "Adobe XD"
+      - "Storybook"
+    color: "#00A8E8"
+
+  - id: "architects"
+    title: "Architects"
+    icon: "layers"
+    tagline: "Building foundations that scale"
+    description: >
+      Our Solution and Cloud Architects design systems with resilience and
+      longevity in mind — guiding technology choices, defining integration
+      patterns and ensuring security by design.
+    skills:
+      - "Enterprise Architecture"
+      - "Cloud-Native Design"
+      - "API & Integration Strategy"
+      - "Security Architecture"
+      - "Performance Engineering"
+    tools:
+      - "AWS / GCP / Azure"
+      - "Terraform"
+      - "Kubernetes"
+      - "draw.io / Miro"
+    color: "#1A3C6E"
+
+  - id: "engineers"
+    title: "Engineers"
+    icon: "terminal"
+    tagline: "Turning blueprints into reality"
+    description: >
+      Our full-stack Engineers bring designs and architectures to life with
+      clean, tested, maintainable code — across frontend, backend, data
+      and AI workloads.
+    skills:
+      - "Full-Stack Development"
+      - "AI / ML Engineering"
+      - "Data Pipelines"
+      - "DevSecOps"
+      - "Performance Optimisation"
+    tools:
+      - "Python / FastAPI"
+      - "React / TypeScript"
+      - "Docker / Kubernetes"
+      - "GitHub Actions"
+    color: "#0077CC"
+
+values:
+  - icon: "target"
+    title: "Outcome-Driven"
+    text: "We measure success by your results, not our activity."
+  - icon: "shield"
+    title: "Quality First"
+    text: "We embed quality from inception — not as an afterthought."
+  - icon: "users"
+    title: "Collaborative"
+    text: "We work as an extension of your team, not a black box."
+  - icon: "trending-up"
+    title: "Continuously Improving"
+    text: "We bring learning, experimentation and growth to every engagement."

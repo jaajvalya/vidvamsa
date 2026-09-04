@@ -1,0 +1,105 @@
+# ─────────────────────────────────────────────
+#  Vidvamsa — Contact & Support Configuration
+#  config/contact.yml
+#  Runtime mirror: src/js/config.js → CONTACT
+# ─────────────────────────────────────────────
+
+support:
+  sla:
+    critical: "2 hours"
+    high: "8 hours"
+    medium: "24 hours"
+    low: "72 hours"
+  channels:
+    - type: "email"
+      label: "Email Support"
+      value: "support@vidvamsa.tech"
+      available: "24/7"
+    - type: "phone"
+      label: "Phone"
+      value: "+91-98765-43210"
+      available: "Mon–Fri, 09:00–18:00 IST"
+    - type: "slack"
+      label: "Slack (Enterprise clients)"
+      value: "vidvamsa-support.slack.com"
+      available: "24/7"
+
+faq:
+  - id: "faq-1"
+    question: "What industries do you serve?"
+    answer: >
+      We serve clients across BFSI, Healthcare, Retail, Manufacturing,
+      EdTech and SaaS — essentially any organisation with complex
+      technology or data challenges.
+
+  - id: "faq-2"
+    question: "How quickly can you onboard?"
+    answer: >
+      Typically within 1–2 weeks for project-based engagements and
+      3–5 days for staff augmentation. We maintain a ready bench
+      of qualified talent.
+
+  - id: "faq-3"
+    question: "Do you offer fixed-price projects?"
+    answer: >
+      Yes — for well-scoped projects with clear requirements. We also
+      offer Time & Material and dedicated team models. We'll recommend
+      the best fit during discovery.
+
+  - id: "faq-4"
+    question: "What does your AI automation practice cover?"
+    answer: >
+      From intelligent document processing and chatbots to full LLM
+      pipelines, computer vision, and custom ML model development and
+      deployment. We cover the full AI lifecycle.
+
+  - id: "faq-5"
+    question: "Do you provide post-deployment support?"
+    answer: >
+      Yes — we offer ongoing managed services, SLA-backed support,
+      proactive monitoring, and continuous evolution packages tailored
+      to your needs.
+
+  - id: "faq-6"
+    question: "Can you work with our existing teams?"
+    answer: >
+      Absolutely. We routinely embed within client teams, complement
+      existing capabilities, and transfer knowledge at every stage.
+
+contact_form:
+  fields:
+    - id: "name"
+      label: "Full Name"
+      type: "text"
+      required: true
+      placeholder: "Jane Smith"
+    - id: "email"
+      label: "Work Email"
+      type: "email"
+      required: true
+      placeholder: "jane@company.com"
+    - id: "company"
+      label: "Company"
+      type: "text"
+      required: false
+      placeholder: "Acme Corp"
+    - id: "service"
+      label: "Service Interest"
+      type: "select"
+      required: false
+      options:
+        - "Technology Consulting"
+        - "AI Automations"
+        - "Cloud Architecture"
+        - "Custom Software Development"
+        - "Data Engineering & Analytics"
+        - "Digital Transformation"
+        - "Other"
+    - id: "message"
+      label: "Message"
+      type: "textarea"
+      required: true
+      placeholder: "Tell us about your project or challenge..."
+  submit_label: "Send Message"
+  success_message: "Thank you! We'll be in touch within one business day."
+  api_endpoint: "/api/v1/contact"   # FastAPI endpoint (future)

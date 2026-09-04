@@ -1,0 +1,23 @@
+/* ────────────────────────────────────────────
+   Vidvamsa — Main CSS Entry Point
+   src/css/main.css
+   Imports all CSS modules in dependency order.
+   ──────────────────────────────────────────── */
+
+/* 1. Design Tokens — must be first */
+@import url('./variables.css');
+
+/* 2. Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* 3. Base Reset & Typography */
+@import url('./base.css');
+
+/* 4. Animations (keyframes used by layout/components) */
+@import url('./animations.css');
+
+/* 5. App Shell & Layout */
+@import url('./layout.css');
+
+/* 6. UI Components */
+@import url('./components.css');

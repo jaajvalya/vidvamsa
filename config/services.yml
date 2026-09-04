@@ -1,0 +1,115 @@
+# ─────────────────────────────────────────────
+#  Vidvamsa — Services Configuration
+#  config/services.yml
+#  Runtime mirror: src/js/config.js → SERVICES
+# ─────────────────────────────────────────────
+
+services:
+  - id: "tech-consulting"
+    title: "Technology Consulting"
+    icon: "cpu"
+    short: "Strategic technology advisory to modernise your stack."
+    description: >
+      We assess your current landscape, identify bottlenecks and design
+      a future-proof technology roadmap aligned with your business goals.
+    highlights:
+      - "Technology landscape assessment"
+      - "Roadmap & architecture design"
+      - "Vendor evaluation & selection"
+      - "Digital transformation strategy"
+    color: "#0077CC"
+    featured: true
+
+  - id: "ai-automation"
+    title: "AI Automations"
+    icon: "zap"
+    short: "Intelligent automation to eliminate repetitive work at scale."
+    description: >
+      We design and deploy AI-driven workflows — from NLP pipelines and
+      computer-vision systems to full-scale LLM integrations — that
+      replace manual processes and unlock new efficiency.
+    highlights:
+      - "LLM integration & fine-tuning"
+      - "NLP / document intelligence"
+      - "Robotic Process Automation (RPA)"
+      - "MLOps & model lifecycle management"
+    color: "#00A8E8"
+    featured: true
+
+  - id: "cloud-architecture"
+    title: "Cloud Architecture"
+    icon: "cloud"
+    short: "Resilient, scalable cloud-native designs on AWS, GCP or Azure."
+    description: >
+      Our architects design cloud-native infrastructures with security,
+      scalability and cost-optimisation at the core — migrations, greenfield
+      builds and hybrid setups.
+    highlights:
+      - "Multi-cloud & hybrid architecture"
+      - "Kubernetes & container orchestration"
+      - "IaC with Terraform / Pulumi"
+      - "FinOps & cost optimisation"
+    color: "#1A3C6E"
+    featured: true
+
+  - id: "software-engineering"
+    title: "Custom Software Development"
+    icon: "code"
+    short: "Full-stack product engineering from MVP to enterprise scale."
+    description: >
+      We build robust, maintainable software products — web applications,
+      APIs, mobile apps — using modern engineering practices including
+      CI/CD, automated testing and trunk-based development.
+    highlights:
+      - "Frontend (React / Vue / Angular)"
+      - "Backend (FastAPI / Node / Java)"
+      - "API design & integration"
+      - "DevSecOps & CI/CD pipelines"
+    color: "#0077CC"
+    featured: false
+
+  - id: "data-engineering"
+    title: "Data Engineering & Analytics"
+    icon: "database"
+    short: "Turn raw data into reliable, actionable insights."
+    description: >
+      We build end-to-end data platforms: ingestion pipelines, data
+      warehouses, semantic layers, and self-serve BI — so your teams
+      make decisions on trustworthy data.
+    highlights:
+      - "Data lakehouse architecture"
+      - "ETL / ELT pipelines"
+      - "dbt, Spark, Kafka, Airflow"
+      - "Real-time streaming analytics"
+    color: "#00A8E8"
+    featured: false
+
+  - id: "digital-transformation"
+    title: "Digital Transformation"
+    icon: "refresh-cw"
+    short: "End-to-end modernisation of people, process and technology."
+    description: >
+      We partner with organisations to reimagine their operating models —
+      from legacy system modernisation and process re-engineering to
+      change management and capability building.
+    highlights:
+      - "Legacy modernisation"
+      - "Process re-engineering"
+      - "Change management"
+      - "Capability building & training"
+    color: "#1A3C6E"
+    featured: false
+
+process:
+  - step: 1
+    title: "Discover"
+    description: "Deep-dive into your context, goals and constraints."
+  - step: 2
+    title: "Design"
+    description: "Craft an architecture and experience blueprint."
+  - step: 3
+    title: "Build"
+    description: "Iterative delivery with weekly demos."
+  - step: 4
+    title: "Evolve"
+    description: "Continuous improvement and scaled operations."

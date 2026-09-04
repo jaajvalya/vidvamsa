@@ -1,0 +1,94 @@
+# ─────────────────────────────────────────────
+#  Vidvamsa — Site Configuration
+#  config/site.yml
+#  All top-level site settings live here.
+#  Runtime mirror: src/js/config.js → SITE
+# ─────────────────────────────────────────────
+
+company:
+  name: "Vidvamsa"
+  tagline: "Engineering Tomorrow, Today"
+  description: >
+    We deliver end-to-end technology services powered by AI automation,
+    driven by a world-class team of Designers, Architects, and Engineers.
+  founded: 2024
+  logo_text: "V" # fallback monogram when no image asset
+
+contact:
+  email: "hello@vidvamsa.tech"
+  phone: "+91-98765-43210"
+  address: "Bengaluru, Karnataka, India"
+  linkedin: "https://linkedin.com/company/vidvamsa"
+  twitter: "https://twitter.com/vidvamsa"
+  github: "https://github.com/vidvamsa"
+
+navigation:
+  items:
+    - id: "home"
+      label: "Home"
+      icon: "home"
+    - id: "services"
+      label: "Services"
+      icon: "layers"
+    - id: "support"
+      label: "Support"
+      icon: "headphones"
+    - id: "contact"
+      label: "Contact Us"
+      icon: "mail"
+
+theme:
+  primary: "#1A3C6E"          # Deep Navy
+  secondary: "#0077CC"        # Bright Blue
+  accent: "#00A8E8"           # Sky Blue
+  background: "#F0F6FF"       # Light Blue BG
+  surface: "#FFFFFF"          # Card / Panel BG
+  text_dark: "#1A1A2E"        # Headings
+  text_medium: "#4A5568"      # Body
+  text_light: "#718096"       # Muted
+  border: "#D0E4F7"           # Subtle borders
+  sidebar_bg: "#0F2D54"       # Sidebar navy
+  sidebar_text: "#E8F4FD"     # Sidebar text
+
+meta:
+  title: "Vidvamsa | Technology Services & AI Automation"
+  description: >
+    Vidvamsa delivers technology consulting, AI automation and digital
+    transformation solutions with expert Designers, Architects and Engineers.
+  keywords:
+    - Technology Services
+    - AI Automation
+    - Digital Transformation
+    - Software Engineering
+    - Cloud Architecture
+  og_image: "assets/images/og-banner.png"
+  favicon: "assets/images/favicon.ico"
+  lang: "en"
+
+hero:
+  headline: "Engineering Tomorrow,"
+  headline_accent: "Today"
+  subtext: >
+    We combine deep technical expertise with AI-powered automation to
+    accelerate your digital transformation journey.
+  cta_primary:
+    label: "Explore Services"
+    href: "#services"
+  cta_secondary:
+    label: "Contact Us"
+    href: "#contact"
+
+stats:
+  - value: "50+"
+    label: "Projects Delivered"
+  - value: "3"
+    label: "Expert Disciplines"
+  - value: "100%"
+    label: "Client Satisfaction"
+  - value: "24/7"
+    label: "Support Coverage"
+
+future:
+  api_base_url: "http://localhost:8000/api/v1"   # FastAPI backend (future)
+  ai_platform_url: "http://localhost:8001"        # AI platform endpoint (future)
+  enable_dynamic_config: false                    # flip to true when FastAPI is live
