@@ -1,272 +1,242 @@
 /**
- * Vidvamsa — Contact Section
+ * Contact Section
  * src/js/sections/contact.js
- *
- * Renders the contact form (client-side validation + simulated submission).
- * When FastAPI is live, the form posts to CONTACT.form.apiEndpoint.
- *
- * @module sections/contact
  */
+import { escapeHtml } from '../utils.js';
+import { SITE } from '../config.js';
 
-import { CONTACT, SITE }            from '../config.js';
-import { renderFormField, renderFooter } from '../renderer.js';
-import { icon, $, escapeHtml }      from '../utils.js';
+const ARROW = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+  aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/>
+  <polyline points="12 5 19 12 12 19"/></svg>`;
 
-/* ── Public ──────────────────────────────────── */
-
-export function mountContact() {
-  const el = document.getElementById('section-contact');
-  if (!el) return;
-  el.innerHTML = _buildContact();
-  _bindForm(el);
+export function mountContact(el) {
+  el.innerHTML = `
+    ${pageHero()}
+    ${mainGrid()}
+    ${nextSteps()}
+  `;
+  initForm(el);
 }
 
-/* ── Private ─────────────────────────────────── */
-
-function _buildContact() {
-  const { form } = CONTACT;
-  const { company, contact } = SITE;
-
+function pageHero() {
   return `
-    <!-- Page Header -->
-    <div class="page-header-band">
-      <div class="page-header-band__inner">
-        <div class="page-header-band__eyebrow">Let's Talk</div>
-        <h1 class="page-header-band__title">Contact Us</h1>
-        <p class="page-header-band__desc">
-          Tell us about your project. We'll respond within one business day.
+    <section class="page-hero">
+      <div class="page-hero__inner">
+        <span class="section-eyebrow section-eyebrow--on-dark">Let's talk</span>
+        <h1 class="page-hero__title">Get in touch</h1>
+        <p class="page-hero__lead">
+          Tell us about your project and we'll respond with a tailored approach
+          document within 48 hours.
         </p>
       </div>
-    </div>
+    </section>`;
+}
 
-    <!-- Contact Layout -->
-    <section class="section-container" aria-labelledby="contact-form-heading">
-      <div style="display:grid; grid-template-columns: 1fr 380px; gap: var(--space-12); align-items:start;">
-
+function mainGrid() {
+  const c = SITE.contact || {};
+  return `
+    <div style="border-top:1px solid var(--color-border);">
+      <div style="max-width:var(--content-max-width);margin:0 auto;
+                  display:grid;grid-template-columns:1fr 360px;">
         <!-- Form -->
-        <div>
-          <h2 id="contact-form-heading" class="section-title" style="margin-bottom:var(--space-8);">
-            Send us a <em>message</em>
-          </h2>
-          <form
-            id="contact-form"
-            class="form"
-            novalidate
-            aria-label="Contact form"
-            data-api="${escapeHtml(form.apiEndpoint)}"
-          >
-            <!-- Row: name + email -->
-            <div class="grid-2">
-              ${renderFormField(form.fields.find((f) => f.id === 'name'))}
-              ${renderFormField(form.fields.find((f) => f.id === 'email'))}
+        <div style="padding:var(--space-16) var(--content-padding);border-right:1px solid var(--color-border);">
+          <div class="section-header" style="margin-bottom:var(--space-8);">
+            <span class="section-eyebrow">Send a message</span>
+            <h2 class="section-title">Start the conversation</h2>
+          </div>
+          <div id="form-alert" role="alert" aria-live="polite" style="margin-bottom:var(--space-6);"></div>
+          <form id="contact-form" novalidate aria-label="Contact form">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 var(--space-6);">
+              ${field('f-name',    'Full name',  'text',     true,  'Ada Lovelace')}
+              ${field('f-email',   'Work email', 'email',    true,  'ada@company.com')}
             </div>
-            <!-- Row: company + service -->
-            <div class="grid-2">
-              ${renderFormField(form.fields.find((f) => f.id === 'company'))}
-              ${renderFormField(form.fields.find((f) => f.id === 'service'))}
+            ${field('f-company', 'Company',    'text',     false, 'Acme Technologies')}
+            <div class="form-group">
+              <label class="form-label" for="f-service">Service area</label>
+              <select class="form-select" id="f-service" name="service">
+                <option value="">Select a service area</option>
+                <option value="consulting">Technology Consulting</option>
+                <option value="ai">AI / ML Platform</option>
+                <option value="cloud">Cloud Architecture</option>
+                <option value="engineering">Software Engineering</option>
+                <option value="data">Data Engineering</option>
+                <option value="transformation">Digital Transformation</option>
+                <option value="support">Support &amp; Managed Services</option>
+                <option value="other">Other</option>
+              </select>
             </div>
-            <!-- Message -->
-            ${renderFormField(form.fields.find((f) => f.id === 'message'))}
-
-            <!-- Status region (filled by JS) -->
-            <div id="form-status" role="alert" aria-live="polite"></div>
-
-            <button type="submit" class="btn btn--primary btn--lg" id="form-submit">
-              ${icon('arrow-right', 16, 'btn__icon')}
-              ${form.submitLabel}
-            </button>
+            ${field('f-message', 'Message',    'textarea', true,  'Describe your project or question…')}
+            <div style="display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap;margin-top:var(--space-6);">
+              <button type="submit" class="btn btn--primary btn--lg" id="submit-btn">
+                Send message ${ARROW}
+              </button>
+              <span id="form-status" style="font-size:var(--text-sm);color:var(--color-text-secondary);"></span>
+            </div>
+            <p style="font-size:var(--text-xs);color:var(--color-text-secondary);margin-top:var(--space-4);">
+              We'll respond within 48 hours on business days. No spam, ever.
+            </p>
           </form>
         </div>
-
-        <!-- Info panel -->
-        <aside aria-label="Contact information">
-          <div class="card" style="margin-bottom:var(--space-5);">
-            <h3 class="card__title" style="font-size:var(--text-lg); margin-bottom:var(--space-5);">
-              Get in touch
-            </h3>
-            ${_infoItem('mail',  contact.email,   `mailto:${contact.email}`)}
-            ${_infoItem('phone', contact.phone,   `tel:${contact.phone.replace(/[^+\d]/g,'')}`)}
-            ${_infoItem('layers', contact.address, null)}
+        <!-- Info sidebar -->
+        <div style="padding:var(--space-12) var(--space-8);background:var(--color-gray-10);">
+          <h3 style="font-size:var(--text-base);font-weight:var(--font-semi);margin-bottom:var(--space-8);">Contact details</h3>
+          ${contactDetails(c)}
+          <div style="border-top:1px solid var(--color-border);padding-top:var(--space-6);margin-top:var(--space-6);">
+            <h3 style="font-size:var(--text-base);font-weight:var(--font-semi);margin-bottom:var(--space-4);">Follow us</h3>
+            <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+              ${c.linkedin ? socialLink('LinkedIn', c.linkedin) : ''}
+              ${c.twitter  ? socialLink('Twitter',  c.twitter)  : ''}
+              ${c.github   ? socialLink('GitHub',   c.github)   : ''}
+            </div>
           </div>
-
-          <div class="card">
-            <h3 class="card__title" style="font-size:var(--text-lg); margin-bottom:var(--space-5);">
-              Connect with us
-            </h3>
-            ${_socialItem('linkedin',   'LinkedIn', contact.linkedin)}
-            ${_socialItem('x',          'Twitter',  contact.twitter)}
-            ${_socialItem('arrow-right','GitHub',   contact.github)}
-          </div>
-        </aside>
+        </div>
       </div>
-    </section>
-
-    ${renderFooter(contact, new Date().getFullYear())}
-  `;
+    </div>`;
 }
 
-function _infoItem(iconName, text, href) {
-  const inner = href
-    ? `<a href="${href}" style="color:var(--color-secondary);">${escapeHtml(text)}</a>`
-    : `<span style="color:var(--color-text-medium);">${escapeHtml(text)}</span>`;
-
+function nextSteps() {
+  const steps = [
+    { n:'01', t:'We review',        b:'A team member reads every enquiry within one business day.' },
+    { n:'02', t:'Discovery call',   b:'30-minute call to clarify your goals, constraints, and timeline.' },
+    { n:'03', t:'Approach doc',     b:'A tailored proposal with scope, delivery model, and phasing.' },
+    { n:'04', t:'Project kick-off', b:'Once aligned, we start within a week with a structured onboarding.' },
+  ];
   return `
-    <div style="display:flex;align-items:center;gap:var(--space-3);margin-bottom:var(--space-4);">
-      <div style="width:36px;height:36px;border-radius:var(--radius-md);background:rgba(0,119,204,0.08);color:var(--color-secondary);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        ${icon(iconName, 18)}
+    <div class="section-band section-band--subtle">
+      <div class="section-band__inner">
+        <div class="section-header">
+          <span class="section-eyebrow">What to expect</span>
+          <h2 class="section-title">After you reach out</h2>
+        </div>
+        <div class="steps" style="grid-template-columns:repeat(4,1fr);">
+          ${steps.map(s => `
+            <div class="step">
+              <span class="step__num">${s.n}</span>
+              <div class="step__title">${escapeHtml(s.t)}</div>
+              <p class="step__body">${escapeHtml(s.b)}</p>
+            </div>`).join('')}
+        </div>
       </div>
-      <div style="font-size:var(--text-sm);">${inner}</div>
-    </div>
-  `;
+    </div>`;
 }
 
-function _socialItem(iconName, label, href) {
+/* ── Helpers ──────────────────────────────── */
+
+function field(id, label, type, required, placeholder) {
+  const isArea = type === 'textarea';
+  const req    = required ? '<span aria-hidden="true" style="color:var(--color-error)"> *</span>' : '';
+  const ac     = { 'f-name':'name', 'f-email':'email', 'f-company':'organization' }[id] || 'off';
+  const input  = isArea
+    ? `<textarea class="form-textarea" id="${id}" name="${id}" rows="5"
+         placeholder="${escapeHtml(placeholder)}" ${required ? 'required' : ''}></textarea>`
+    : `<input class="form-input" type="${type}" id="${id}" name="${id}"
+         placeholder="${escapeHtml(placeholder)}" autocomplete="${ac}"
+         ${required ? 'required' : ''}>`;
   return `
-    <a href="${href}" target="_blank" rel="noopener"
-       style="display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) 0;color:var(--color-text-medium);text-decoration:none;font-size:var(--text-sm);border-bottom:1px solid var(--color-border);"
-       class="site-footer__link"
-    >
-      ${icon(iconName, 16)}
-      ${escapeHtml(label)}
-      ${icon('arrow-right', 14)}
-    </a>
-  `;
+    <div class="form-group">
+      <label class="form-label" for="${id}">${escapeHtml(label)}${req}</label>
+      ${input}
+      <span class="form-error" id="${id}-err" hidden></span>
+      ${isArea ? '<span class="form-helper">Min 10 characters.</span>' : ''}
+    </div>`;
 }
 
-/* ── Form Handling ───────────────────────────── */
+function contactDetails(c) {
+  return [
+    { lbl:'Email',   val:c.email,   href:`mailto:${c.email}` },
+    { lbl:'Phone',   val:c.phone,   href:`tel:${c.phone}`    },
+    { lbl:'Address', val:c.address, href:null                },
+    { lbl:'Hours',   val:'Mon–Fri, 9 AM – 6 PM IST', href:null },
+  ].filter(r => r.val).map(r => `
+    <div style="margin-bottom:var(--space-5);">
+      <div style="font-size:var(--text-xs);font-weight:var(--font-semi);text-transform:uppercase;
+                  letter-spacing:0.08em;color:var(--color-gray-50);margin-bottom:var(--space-1);">
+        ${escapeHtml(r.lbl)}
+      </div>
+      ${r.href
+        ? `<a href="${escapeHtml(r.href)}" class="inline-link" style="font-size:var(--text-sm);">${escapeHtml(r.val)}</a>`
+        : `<div style="font-size:var(--text-sm);color:var(--color-text-primary);">${escapeHtml(r.val)}</div>`}
+    </div>`).join('');
+}
 
-/**
- * Bind submit event and client-side validation.
- * @param {Element} root
- */
-function _bindForm(root) {
-  const form      = root.querySelector('#contact-form');
-  const statusEl  = root.querySelector('#form-status');
-  const submitBtn = root.querySelector('#form-submit');
-  if (!form) return;
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    if (!_validateForm(form, statusEl)) return;
-
-    // Loading state
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = `
-      <svg class="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+function socialLink(name, url) {
+  return `
+    <a href="${escapeHtml(url)}" class="inline-link" target="_blank" rel="noopener noreferrer"
+       style="font-size:var(--text-sm);">
+      ${escapeHtml(name)}
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
       </svg>
-      Sending…
-    `;
+    </a>`;
+}
 
-    try {
-      await _submitForm(form);
-      _showSuccess(statusEl);
-      form.reset();
-    } catch (err) {
-      _showError(statusEl, err.message);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = `${icon('arrow-right', 16, 'btn__icon')} ${CONTACT.form.submitLabel}`;
-    }
+/* ── Form validation & submit ─────────────── */
+
+function initForm(el) {
+  const form      = el.querySelector('#contact-form');
+  if (!form) return;
+  const alertEl   = el.querySelector('#form-alert');
+  const statusEl  = el.querySelector('#form-status');
+  const submitBtn = el.querySelector('#submit-btn');
+
+  const setErr = (id, msg) => {
+    el.querySelector(`#${id}`)?.classList.add('form-input--error');
+    const e = el.querySelector(`#${id}-err`);
+    if (e) { e.hidden = false; e.textContent = msg; }
+  };
+
+  const clearErr = id => {
+    el.querySelector(`#${id}`)?.classList.remove('form-input--error');
+    const e = el.querySelector(`#${id}-err`);
+    if (e) { e.hidden = true; e.textContent = ''; }
+  };
+
+  const validate = () => {
+    ['f-name','f-email','f-message'].forEach(clearErr);
+    let ok = true;
+    const name  = el.querySelector('#f-name')?.value.trim();
+    const email = el.querySelector('#f-email')?.value.trim();
+    const msg   = el.querySelector('#f-message')?.value.trim();
+    if (!name)  { setErr('f-name',    'Full name is required'); ok = false; }
+    if (!email) { setErr('f-email',   'Work email is required'); ok = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+                { setErr('f-email',   'Please enter a valid email address'); ok = false; }
+    if (!msg || msg.length < 10)
+                { setErr('f-message', 'Please enter at least 10 characters'); ok = false; }
+    return ok;
+  };
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    alertEl.innerHTML = '';
+    if (!validate()) return;
+
+    submitBtn.disabled = true;
+    if (statusEl) statusEl.textContent = 'Sending…';
+
+    await new Promise(r => setTimeout(r, 1000)); // Phase 2: fetch('/api/v1/contact', {...})
+
+    submitBtn.disabled = false;
+    if (statusEl) statusEl.textContent = '';
+    submitBtn.innerHTML = `Send message ${ARROW}`;
+
+    alertEl.innerHTML = `
+      <div class="alert alert--success" role="status">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+        <div>
+          <strong>Message sent!</strong><br>
+          Thanks for reaching out. We'll reply within 48 hours on business days.
+        </div>
+      </div>`;
+    form.reset();
+    alertEl.scrollIntoView({ behavior:'smooth', block:'nearest' });
   });
-}
-
-/**
- * Client-side validation; returns true if valid.
- * @param {HTMLFormElement} form
- * @param {Element} statusEl
- * @returns {boolean}
- */
-function _validateForm(form, statusEl) {
-  const required = Array.from(form.querySelectorAll('[required]'));
-  let firstInvalid = null;
-
-  required.forEach((field) => {
-    const group = field.closest('.form__group');
-    const isValid = field.value.trim() !== '';
-    field.classList.toggle('is-error', !isValid);
-    if (group) {
-      const existing = group.querySelector('.field-error');
-      if (!isValid && !existing) {
-        const err = document.createElement('span');
-        err.className = 'field-error';
-        err.style.cssText = 'color:var(--color-error);font-size:var(--text-xs);margin-top:4px;';
-        err.textContent = 'This field is required.';
-        group.appendChild(err);
-      } else if (isValid && existing) {
-        existing.remove();
-      }
-    }
-    if (!isValid && !firstInvalid) firstInvalid = field;
-  });
-
-  // Email validation
-  const emailField = form.querySelector('#email');
-  if (emailField && emailField.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value)) {
-    emailField.classList.add('is-error');
-    const group = emailField.closest('.form__group');
-    if (group && !group.querySelector('.field-error')) {
-      const err = document.createElement('span');
-      err.className = 'field-error';
-      err.style.cssText = 'color:var(--color-error);font-size:var(--text-xs);margin-top:4px;';
-      err.textContent = 'Please enter a valid email address.';
-      group.appendChild(err);
-    }
-    if (!firstInvalid) firstInvalid = emailField;
-  }
-
-  if (firstInvalid) {
-    firstInvalid.focus();
-    _showError(statusEl, 'Please fill in all required fields.');
-    return false;
-  }
-
-  statusEl.innerHTML = '';
-  return true;
-}
-
-/**
- * Submit the form. If FastAPI is not yet live, simulates submission.
- * @param {HTMLFormElement} form
- */
-async function _submitForm(form) {
-  const endpoint = form.dataset.api;
-  const payload  = Object.fromEntries(new FormData(form));
-
-  // If dynamic config is disabled, simulate (static site mode)
-  if (!SITE.future.enableDynamicConfig) {
-    await new Promise((res) => setTimeout(res, 1200)); // simulate network
-    console.info('[Vidvamsa] Contact form payload (simulation):', payload);
-    return;
-  }
-
-  // Live FastAPI submission
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.detail || `Server error ${res.status}`);
-  }
-}
-
-function _showSuccess(el) {
-  el.innerHTML = `
-    <div class="alert alert--success" role="status">
-      ${icon('check-circle', 18)}
-      <span>${CONTACT.form.successMessage}</span>
-    </div>
-  `;
-}
-
-function _showError(el, msg) {
-  el.innerHTML = `
-    <div class="alert alert--error">
-      <span>${escapeHtml(msg)}</span>
-    </div>
-  `;
 }

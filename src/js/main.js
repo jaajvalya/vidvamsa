@@ -71,8 +71,8 @@ function bootstrap() {
 
   console.info(
     `%c Vidvamsa v1.0.0 %c ${SITE.company.tagline} `,
-    'background:#0F2D54;color:#00A8E8;font-weight:bold;padding:2px 6px;border-radius:3px 0 0 3px;',
-    'background:#00A8E8;color:#fff;padding:2px 6px;border-radius:0 3px 3px 0;',
+    'background:#111894;color:#A0B4FF;font-weight:bold;padding:2px 6px;border-radius:0;',
+    'background:#0F62FE;color:#fff;padding:2px 6px;border-radius:0;',
   );
 }
 
@@ -85,8 +85,9 @@ function bootstrap() {
 function _ensureMounted(sectionId) {
   if (mounted.has(sectionId)) return;
   const mountFn = SECTION_REGISTRY.get(sectionId);
-  if (!mountFn) return;
-  mountFn();
+  const el      = document.getElementById(`section-${sectionId}`);
+  if (!mountFn || !el) return;
+  mountFn(el);
   mounted.add(sectionId);
 }
 

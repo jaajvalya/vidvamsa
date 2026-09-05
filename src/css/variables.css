@@ -1,129 +1,137 @@
 /* ────────────────────────────────────────────
-   Vidvamsa — CSS Custom Properties (Design Tokens)
+   Vidvamsa — Design Tokens
+   IBM Carbon 2026 palette
    src/css/variables.css
-   Single source of truth for all visual values.
    ──────────────────────────────────────────── */
 
 :root {
-  /* ── Brand Palette ─────────────────────── */
-  --color-primary:       #1A3C6E;   /* Deep Navy     */
-  --color-secondary:     #0077CC;   /* Bright Blue   */
-  --color-accent:        #00A8E8;   /* Sky Blue      */
-  --color-accent-hover:  #0090CF;
+  /* ── IBM Blue ───────────────────────────── */
+  --color-blue-10:  #EDF5FF;
+  --color-blue-20:  #D0E2FF;
+  --color-blue-40:  #78A9FF;
+  --color-blue-60:  #0F62FE;    /* Primary interactive */
+  --color-blue-70:  #0043CE;    /* Hover */
+  --color-blue-80:  #002D9C;    /* Active */
 
-  /* ── Surface & Background ──────────────── */
-  --color-bg:            #F0F6FF;   /* Page BG       */
-  --color-surface:       #FFFFFF;   /* Card / Panel  */
-  --color-surface-hover: #F7FAFF;
-  --color-sidebar-bg:    #0F2D54;   /* Sidebar       */
+  /* ── IBM Gray Scale ─────────────────────── */
+  --color-gray-100: #161616;    /* Near-black (text only — NOT used for bg) */
+  --color-gray-90:  #262626;
+  --color-gray-80:  #393939;
 
-  /* ── Typography ────────────────────────── */
-  --color-text-dark:     #1A1A2E;
-  --color-text-medium:   #4A5568;
-  --color-text-light:    #718096;
-  --color-text-inverse:  #FFFFFF;
-  --color-sidebar-text:  #E8F4FD;
-  --color-sidebar-muted: #94B8D8;
+  /* ── Brand Dark Blues (replace all black bgs) ─ */
+  --color-dark-1: #0D1275;    /* darkest — footer, deepest bands */
+  --color-dark-2: #111894;    /* hero-level — dark section bands  */
+  --color-dark-3: #1A24A8;    /* slightly lighter — dark cards/tiles */
+  --color-dark-4: #2030B8;    /* hover states on dark tiles */
+  --color-dark-border: rgba(110, 130, 255, 0.28); /* border on dark bg */
+  --color-gray-70:  #525252;    /* Body text */
+  --color-gray-60:  #6F6F6F;    /* Secondary text */
+  --color-gray-50:  #8D8D8D;    /* Placeholder / disabled */
+  --color-gray-30:  #C6C6C6;    /* Dividers */
+  --color-gray-20:  #E0E0E0;    /* Borders */
+  --color-gray-10:  #F4F4F4;    /* Subtle surface */
+  --color-white:    #FFFFFF;
 
   /* ── Semantic ───────────────────────────── */
-  --color-success:       #2E7D32;
-  --color-warning:       #E65100;
-  --color-error:         #C62828;
-  --color-info:          #0277BD;
+  --color-primary:         var(--color-blue-60);
+  --color-primary-hover:   var(--color-blue-70);
+  --color-primary-active:  var(--color-blue-80);
+  --color-primary-subtle:  var(--color-blue-10);
 
-  /* ── Borders ────────────────────────────── */
-  --color-border:        #D0E4F7;
-  --color-border-strong: #A8C8E8;
-  --color-focus:         #00A8E8;
+  --color-bg:              var(--color-white);
+  --color-bg-subtle:       var(--color-gray-10);
+  --color-bg-dark:         var(--color-dark-2);   /* was #161616 → now deep blue */
 
-  /* ── Gradients ──────────────────────────── */
-  --gradient-hero:       linear-gradient(135deg, #0F2D54 0%, #1A3C6E 60%, #0077CC 100%);
-  --gradient-card:       linear-gradient(180deg, #FFFFFF 0%, #F7FAFF 100%);
-  --gradient-sidebar:    linear-gradient(180deg, #0F2D54 0%, #0A1F3D 100%);
+  --color-text-primary:    var(--color-gray-100);
+  --color-text-secondary:  var(--color-gray-70);
+  --color-text-tertiary:   var(--color-gray-60);
+  --color-text-on-dark:    var(--color-white);
+  --color-text-on-dark-2:  rgba(255,255,255,0.65);
 
-  /* ── Sidebar dimensions ─────────────────── */
-  --sidebar-width:       260px;
-  --sidebar-collapsed:   64px;
+  --color-border:          var(--color-gray-20);
+  --color-border-strong:   var(--color-gray-30);
 
-  /* ── Spacing Scale (8px grid) ───────────── */
+  /* Topbar */
+  --color-topbar-bg:       var(--color-white);
+
+  /* Alerts */
+  --color-success: #24A148;
+  --color-error:   #DA1E28;
+  --color-warning: #F1C21B;
+
+  /* ── Layout ─────────────────────────────── */
+  --topbar-height:     62px;
+  --content-max-width: 1312px;   /* IBM uses wide containers */
+  --content-padding:   var(--space-8);
+
+  /* ── Spacing (8-pt grid) ────────────────── */
   --space-1:  4px;
   --space-2:  8px;
   --space-3:  12px;
   --space-4:  16px;
   --space-5:  20px;
   --space-6:  24px;
+  --space-7:  28px;
   --space-8:  32px;
   --space-10: 40px;
   --space-12: 48px;
   --space-16: 64px;
   --space-20: 80px;
+  --space-24: 96px;
 
-  /* ── Typography Scale ───────────────────── */
-  --font-family:        'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  --font-family-mono:   'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+  /* ── Typography ─────────────────────────── */
+  --font-family:      'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+  --font-family-mono: 'IBM Plex Mono', 'Menlo', monospace;
 
-  --text-xs:   0.75rem;    /*  12px */
-  --text-sm:   0.875rem;   /*  14px */
-  --text-base: 1rem;       /*  16px */
-  --text-lg:   1.125rem;   /*  18px */
-  --text-xl:   1.25rem;    /*  20px */
-  --text-2xl:  1.5rem;     /*  24px */
-  --text-3xl:  1.875rem;   /*  30px */
-  --text-4xl:  2.25rem;    /*  36px */
-  --text-5xl:  3rem;       /*  48px */
+  --text-xs:    0.75rem;     /* 12px */
+  --text-sm:    0.875rem;    /* 14px */
+  --text-base:  1rem;        /* 16px */
+  --text-lg:    1.125rem;    /* 18px */
+  --text-xl:    1.25rem;     /* 20px */
+  --text-2xl:   1.5rem;      /* 24px */
+  --text-3xl:   2rem;        /* 32px */
+  --text-4xl:   2.625rem;    /* 42px */
+  --text-5xl:   3.375rem;    /* 54px */
+  --text-display: clamp(2.375rem, 4.5vw, 3.375rem);
 
   --font-light:   300;
   --font-regular: 400;
-  --font-medium:  500;
   --font-semi:    600;
   --font-bold:    700;
 
-  --leading-tight:  1.25;
-  --leading-snug:   1.375;
-  --leading-normal: 1.5;
-  --leading-relaxed:1.625;
+  --leading-tight:   1.2;
+  --leading-snug:    1.25;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
 
   /* ── Borders & Radius ───────────────────── */
-  --radius-sm:  4px;
-  --radius-md:  8px;
-  --radius-lg:  12px;
-  --radius-xl:  16px;
-  --radius-2xl: 24px;
-  --radius-full: 9999px;
+  --radius-none: 0;
+  --radius-sm:   0;       /* IBM buttons / inputs: sharp */
+  --radius-md:   0;       /* IBM cards: sharp */
+  --radius-lg:   0;
+  --radius-pill: 9999px;
 
-  --border-width:       1px;
-  --border-width-thick: 2px;
+  --border-width:      1px;
+  --border-indicator:  4px;  /* Active left-border / progress bar */
 
-  /* ── Shadows (flat-first, subtle depth) ─── */
-  --shadow-sm:  0 1px 2px rgba(10, 31, 61, 0.06);
-  --shadow-md:  0 2px 8px rgba(10, 31, 61, 0.09);
-  --shadow-lg:  0 4px 16px rgba(10, 31, 61, 0.12);
-  --shadow-xl:  0 8px 32px rgba(10, 31, 61, 0.14);
+  /* ── Shadows (IBM: subtle, only on hover) ─ */
+  --shadow-sm:  0 1px 3px rgba(0,0,0,0.10);
+  --shadow-md:  0 4px 12px rgba(0,0,0,0.12);
+  --shadow-lg:  0 8px 24px rgba(0,0,0,0.16);
+  --shadow-none: none;
 
-  /* ── Transitions ────────────────────────── */
-  --transition-fast:   100ms ease;
-  --transition-base:   200ms ease;
-  --transition-slow:   350ms ease;
-  --transition-layout: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  /* ── Motion ─────────────────────────────── */
+  --ease-standard:  cubic-bezier(0.2, 0, 0.38, 0.9);
+  --ease-entrance:  cubic-bezier(0, 0, 0.38, 0.9);
+  --ease-exit:      cubic-bezier(0.2, 0, 1, 0.9);
+  --duration-fast:  70ms;
+  --duration-base:  110ms;
+  --duration-slow:  240ms;
+  --duration-enter: 240ms;
 
-  /* ── Z-Index Scale ──────────────────────── */
-  --z-sidebar:  100;
-  --z-header:   90;
-  --z-modal:    200;
-  --z-toast:    300;
-  --z-tooltip:  400;
-
-  /* ── Layout ─────────────────────────────── */
-  --content-max-width: 1120px;
-  --section-padding-y: var(--space-16);
-  --section-padding-x: var(--space-10);
-  --card-padding:      var(--space-6);
-  --header-height:     64px;
-}
-
-/* ── Dark Mode Overrides (reserved for future) ─ */
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Will be populated in a future iteration */
-  }
+  /* ── Z-Index ────────────────────────────── */
+  --z-topbar:   100;
+  --z-dropdown: 200;
+  --z-modal:    300;
+  --z-toast:    400;
 }

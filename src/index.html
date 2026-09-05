@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Primary Meta (overridden by main.js from config) -->
+  <!-- Primary Meta -->
   <title>Vidvamsa | Technology Services &amp; AI Automation</title>
   <meta name="description" content="Vidvamsa delivers technology consulting, AI automation and digital transformation solutions with expert Designers, Architects and Engineers." />
   <meta name="keywords"    content="Technology Services, AI Automation, Digital Transformation, Software Engineering, Cloud Architecture" />
@@ -16,136 +16,80 @@
   <meta property="og:url"         content="https://vidvamsa.tech/" />
   <meta property="og:title"       content="Vidvamsa | Technology Services &amp; AI Automation" />
   <meta property="og:description" content="End-to-end technology services powered by AI. Expert Designers, Architects and Engineers." />
-  <meta property="og:image"       content="assets/images/og-banner.png" />
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card"        content="summary_large_image" />
-  <meta name="twitter:site"        content="@vidvamsa" />
-  <meta name="twitter:title"       content="Vidvamsa | Technology Services &amp; AI Automation" />
-  <meta name="twitter:description" content="End-to-end technology services powered by AI." />
+  <!-- Favicon — IBM Blue square with V -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230F62FE'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' fill='%23FFFFFF' font-size='18' font-family='IBM Plex Sans,system-ui' font-weight='700'%3EV%3C/text%3E%3C/svg%3E" />
 
-  <!-- Favicon (placeholder until asset is added) -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F2D54'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='central' text-anchor='middle' fill='%2300A8E8' font-size='18' font-family='system-ui' font-weight='bold'%3EV%3C/text%3E%3C/svg%3E" />
-
-  <!-- Stylesheet -->
-  <link rel="stylesheet" href="css/main.css" />
-
-  <!-- Preconnect for Google Fonts (loaded in main.css) -->
+  <!-- Preconnect for IBM Plex fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Main stylesheet (imports fonts, tokens, layout, components) -->
+  <link rel="stylesheet" href="css/main.css" />
 </head>
 <body>
 
-  <!-- Accessibility: skip to main content -->
+  <!-- Skip to main content (accessibility) -->
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <!-- Mobile menu toggle (visible only on small screens) -->
-  <button
-    id="menu-toggle"
-    class="menu-toggle"
-    aria-label="Open navigation menu"
-    aria-expanded="false"
-    aria-controls="sidebar"
-  >
-    <!-- Hamburger icon (inline SVG — no external dependency) -->
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-         stroke="currentColor" stroke-width="2.5"
-         stroke-linecap="round" stroke-linejoin="round"
-         aria-hidden="true">
-      <line x1="3" y1="12" x2="21" y2="12"/>
-      <line x1="3" y1="6"  x2="21" y2="6"/>
-      <line x1="3" y1="18" x2="21" y2="18"/>
-    </svg>
-  </button>
-
-  <!-- Sidebar Overlay (mobile backdrop) -->
-  <div id="sidebar-overlay" class="sidebar-overlay" aria-hidden="true"></div>
-
   <!-- ═══════════════════════════════════════════
-       APP SHELL
+       TOP NAVIGATION BAR — IBM.com style
+       Rendered by src/js/navigation.js
        ═══════════════════════════════════════════ -->
-  <div class="app-shell">
+  <header id="topbar" class="topbar" role="banner">
+    <!-- Injected by navigation.js -->
+  </header>
 
-    <!-- ── Left Sidebar (rendered by navigation.js) ── -->
-    <aside id="sidebar" class="sidebar" aria-label="Site navigation">
-      <!--
-        Content injected by src/js/navigation.js
-        Structure:
-          .sidebar__brand   → logo + company name
-          .sidebar__nav     → nav links (from SITE.navigation config)
-          .sidebar__footer  → copyright
-      -->
-    </aside>
-
-    <!-- ── Main Content Area ── -->
-    <main id="main-content" class="main-content" tabindex="-1">
-
-      <!--
-        Each .page-section is a "virtual route" identified by data-section.
-        The active section gets the class .is-active via navigation.js.
-        Content is injected lazily by the matching section module.
-      -->
-
-      <!-- Home -->
-      <div
-        id="section-home"
-        class="page-section"
-        data-section="home"
-        role="region"
-        aria-label="Home"
-      >
-        <!-- Mounted by src/js/sections/home.js -->
-      </div>
-
-      <!-- Services -->
-      <div
-        id="section-services"
-        class="page-section"
-        data-section="services"
-        role="region"
-        aria-label="Services"
-      >
-        <!-- Mounted by src/js/sections/services.js -->
-      </div>
-
-      <!-- Support -->
-      <div
-        id="section-support"
-        class="page-section"
-        data-section="support"
-        role="region"
-        aria-label="Support"
-      >
-        <!-- Mounted by src/js/sections/support.js -->
-      </div>
-
-      <!-- Contact -->
-      <div
-        id="section-contact"
-        class="page-section"
-        data-section="contact"
-        role="region"
-        aria-label="Contact Us"
-      >
-        <!-- Mounted by src/js/sections/contact.js -->
-      </div>
-
-    </main>
-  </div><!-- /.app-shell -->
+  <!-- Mobile navigation drawer (injected by navigation.js) -->
+  <nav id="mobile-nav" class="topbar__mobile-nav" aria-label="Mobile navigation" hidden></nav>
 
   <!-- ═══════════════════════════════════════════
-       JAVASCRIPT — ES Modules
-       Entry point: src/js/main.js
+       MAIN CONTENT — full-width below topbar
+       ═══════════════════════════════════════════ -->
+  <main id="main-content" class="main-content" tabindex="-1">
+
+    <!-- Home -->
+    <div
+      id="section-home"
+      class="page-section"
+      data-section="home"
+      role="region"
+      aria-label="Home"
+    ></div>
+
+    <!-- Services -->
+    <div
+      id="section-services"
+      class="page-section"
+      data-section="services"
+      role="region"
+      aria-label="Services"
+    ></div>
+
+    <!-- Support -->
+    <div
+      id="section-support"
+      class="page-section"
+      data-section="support"
+      role="region"
+      aria-label="Support"
+    ></div>
+
+    <!-- Contact -->
+    <div
+      id="section-contact"
+      class="page-section"
+      data-section="contact"
+      role="region"
+      aria-label="Contact Us"
+    ></div>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       JAVASCRIPT — ES Modules entry point
        ═══════════════════════════════════════════ -->
   <script type="module" src="js/main.js"></script>
-
-  <!--
-    FUTURE: When FastAPI is live, add the following before the closing </body>:
-    <script>
-      window.__VIDVAMSA_CONFIG__ = /* server-injected JSON from /api/v1/config *\/;
-    </script>
-    Then main.js will detect __VIDVAMSA_CONFIG__ and skip the static SITE import.
-  -->
 
 </body>
 </html>

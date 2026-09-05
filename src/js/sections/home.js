@@ -1,182 +1,278 @@
 /**
- * Vidvamsa — Home Section
+ * Home Section
  * src/js/sections/home.js
- *
- * Renders the landing / home page content.
- *
- * @module sections/home
  */
+import { icon, escapeHtml } from '../utils.js';
+import { SITE, SERVICES, TEAM } from '../config.js';
 
-import { SITE, SERVICES, TEAM }                     from '../config.js';
-import { renderStat, renderFooter }                 from '../renderer.js';
-import { icon }                                     from '../utils.js';
+const ARROW = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+  aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/>
+  <polyline points="12 5 19 12 12 19"/></svg>`;
 
-/* ── Public ──────────────────────────────────── */
-
-/**
- * Mount the Home section into #section-home.
- */
-export function mountHome() {
-  const el = document.getElementById('section-home');
-  if (!el) return;
-  el.innerHTML = _buildHome();
+export function mountHome(el) {
+  el.innerHTML = buildHome();
 }
 
-/* ── Private ─────────────────────────────────── */
-
-function _buildHome() {
-  const { hero, stats, company, contact } = SITE;
+function buildHome() {
+  const featured    = (SERVICES.items || []).filter(s => s.featured).slice(0, 3);
+  const disciplines = TEAM.disciplines || [];
 
   return `
-    <!-- Hero -->
+    ${hero()}
+    ${statsBar()}
+    ${featuredServices(featured)}
+    ${disciplinesBand(disciplines)}
+    ${featureRow(
+      'Why Vidvamsa',
+      'Built for enterprise. Sized for speed.',
+      'We combine the rigour of large-system thinking with the agility of a focused team. Every project is config-driven, API-ready, and designed to grow with your ambitions — no lock-in, no black-box delivery.',
+      '🏛️', false
+    )}
+    ${featureRow(
+      'Phase 2 Roadmap',
+      'Your AI platform — built in from day one.',
+      'Our architecture anticipates your next phase. Modular FastAPI services, AI inference engines, and agent orchestration are clear extension points we build into every engagement — so your investment compounds.',
+      '🤖', true
+    )}
+    ${valuesBand()}
+    ${ctaBand()}
+    ${footer()}
+  `;
+}
+
+/* ── Hero ─────────────────────────────────── */
+function hero() {
+  return `
     <section class="hero" aria-labelledby="hero-heading">
-      <div class="hero__content">
-        <div class="hero__eyebrow">
-          ${icon('zap', 12)}
-          Technology Services &amp; AI Automation
+      <div class="hero__inner">
+        <div class="hero__content">
+          <span class="hero__eyebrow" style="color:#FFFFFF;letter-spacing:0.18em;">
+            BUILDING TOMORROW, TODAY
+          </span>
+          <h1 id="hero-heading" class="hero__headline">
+            Build smarter.<br><em>Deliver faster.</em>
+          </h1>
+          <p class="hero__lead">${escapeHtml(SITE.company.description)}</p>
+          <div class="hero__actions">
+            <a href="#services" class="btn btn--primary btn--lg" data-section="services">
+              Explore services ${ARROW}
+            </a>
+            <a href="#contact" class="btn btn--secondary btn--lg" data-section="contact">
+              Talk to us
+            </a>
+          </div>
         </div>
-        <h1 id="hero-heading" class="hero__headline">
-          ${hero.headline}
-          <span class="hero__headline-accent">${hero.headlineAccent}</span>
-        </h1>
-        <p class="hero__subtext">${hero.subtext}</p>
-        <div class="hero__cta-group">
-          <a href="${hero.ctaPrimary.href}" class="btn btn--white btn--lg">
-            ${hero.ctaPrimary.label}
-            ${icon('arrow-right', 16, 'btn__icon')}
-          </a>
-          <a href="${hero.ctaSecondary.href}" class="btn btn--white-outline btn--lg">
-            ${hero.ctaSecondary.label}
-          </a>
-        </div>
       </div>
-    </section>
+    </section>`;
+}
 
-    <!-- Stats Bar -->
-    <div class="stats-bar" aria-label="Key metrics">
-      <div class="stats-bar__inner">
-        ${stats.map(renderStat).join('')}
-      </div>
-    </div>
+/* ── Stats bar ───────────────────────────── */
+function statsBar() {
+  const stats = SITE.stats || [
+    { value: '50+',  label: 'Projects delivered' },
+    { value: '3',    label: 'Expert disciplines'  },
+    { value: '100%', label: 'Client satisfaction' },
+    { value: '24/7', label: 'Support coverage'    },
+  ];
+  return `
+    <div class="stats-bar" role="list" aria-label="Company metrics">
+      ${stats.map(s => `
+        <div class="stat-tile" role="listitem">
+          <div class="stat-tile__value">${escapeHtml(s.value)}</div>
+          <div class="stat-tile__label">${escapeHtml(s.label)}</div>
+        </div>`).join('')}
+    </div>`;
+}
 
-    <!-- Featured Services -->
-    <section class="section-container" aria-labelledby="services-preview-heading">
-      <div class="section-header">
-        <div class="section-eyebrow">What We Do</div>
-        <h2 id="services-preview-heading" class="section-title">
-          Technology that <em>drives growth</em>
-        </h2>
-        <p class="section-lead">
-          From strategy to deployment, our experts cover every layer of your
-          technology and data stack.
-        </p>
-      </div>
-      <div class="grid-3">
-        ${SERVICES.items
-          .filter((s) => s.featured)
-          .map((s, i) => _servicePreviewCard(s, i))
-          .join('')}
-      </div>
-      <div style="text-align:center; margin-top: var(--space-8);">
-        <a href="#services" class="btn btn--outline">
-          View all services ${icon('arrow-right', 16, 'btn__icon')}
-        </a>
-      </div>
-    </section>
-
-    <!-- Team Disciplines -->
-    <section
-      style="background: var(--color-surface); border-top: 1px solid var(--color-border);"
-      aria-labelledby="team-preview-heading"
-    >
-      <div class="section-container">
-        <div class="section-header section-header--centered">
-          <div class="section-eyebrow">Our Team</div>
-          <h2 id="team-preview-heading" class="section-title">
-            Designers, Architects <em>&amp; Engineers</em>
-          </h2>
+/* ── Featured services ───────────────────── */
+function featuredServices(items) {
+  const EMOJIS = { cpu:'⚙️', zap:'⚡', cloud:'☁️', code:'💻', database:'🗄️', 'refresh-cw':'🔄', layers:'🗂️' };
+  return `
+    <div class="section-band section-band--white">
+      <div class="section-band__inner">
+        <div class="section-header">
+          <span class="section-eyebrow">Our capabilities</span>
+          <h2 class="section-title">What we deliver</h2>
           <p class="section-lead">
-            Three disciplines. One seamless team. Working together to deliver
-            solutions that are beautiful, robust and intelligent.
+            End-to-end technology services spanning strategy, design, and engineering —
+            built for longevity and AI-readiness.
           </p>
         </div>
-        <div class="grid-3">
-          ${TEAM.disciplines.map(_disciplinePreview).join('')}
+        <div class="tile-grid tile-grid--4col" style="margin-bottom:var(--space-6);">
+          ${items.map(s => `
+            <div class="tile tile--clickable">
+              <div class="tile__icon" aria-hidden="true">${EMOJIS[s.icon] || '◆'}</div>
+              <div class="tile__title">${escapeHtml(s.title)}</div>
+              <p class="tile__body">${escapeHtml(s.short || s.description)}</p>
+              <a href="#services" class="tile__link" data-section="services">
+                Learn more ${ARROW}
+              </a>
+            </div>`).join('')}
+          <div class="tile tile--dark">
+            <div class="tile__tag">Coming next</div>
+            <div class="tile__icon" aria-hidden="true">🤖</div>
+            <div class="tile__title">AI Platform &amp; FastAPI</div>
+            <p class="tile__body">Phase 2 delivers AI inference, agent orchestration, and RESTful services — built on your Phase 1 foundation.</p>
+            <a href="#contact" class="tile__link" data-section="contact">
+              Enquire about Phase 2 ${ARROW}
+            </a>
+          </div>
         </div>
-      </div>
-    </section>
-
-    <!-- Values Strip -->
-    <section class="section-container" aria-labelledby="values-heading">
-      <div class="section-header section-header--centered">
-        <div class="section-eyebrow">Our Principles</div>
-        <h2 id="values-heading" class="section-title">How we work</h2>
-      </div>
-      <div class="grid-4">
-        ${TEAM.values.map(_valueItem).join('')}
-      </div>
-    </section>
-
-    <!-- CTA Band -->
-    <section
-      style="background: var(--color-primary); padding: var(--space-16) var(--space-10); text-align: center;"
-      aria-label="Call to action"
-    >
-      <div style="max-width: 560px; margin: 0 auto;">
-        <h2 style="color: #fff; font-size: var(--text-3xl); margin-bottom: var(--space-4);">
-          Ready to transform your technology?
-        </h2>
-        <p style="color: rgba(232,244,253,0.8); margin-bottom: var(--space-8); font-size: var(--text-lg);">
-          Let's talk about your goals and design a path forward together.
-        </p>
-        <a href="#contact" class="btn btn--white btn--lg">
-          Get in touch ${icon('arrow-right', 16, 'btn__icon')}
+        <a href="#services" class="inline-link" data-section="services">
+          View all services ${ARROW}
         </a>
       </div>
-    </section>
-
-    ${renderFooter(contact, new Date().getFullYear())}
-  `;
+    </div>`;
 }
 
-function _servicePreviewCard(service, index) {
-  const staggerClass = `stagger-${Math.min(index + 1, 6)}`;
+/* ── Disciplines band ────────────────────── */
+function disciplinesBand(disciplines) {
+  const EMOJIS = { 'pen-tool':'🎨', layers:'🏛️', terminal:'💻', monitor:'📊', users:'👥' };
   return `
-    <article class="card animate-slide-up ${staggerClass}" style="border-top: 3px solid ${service.color};">
-      <div class="card__icon-wrapper" style="background:${service.color}18; color:${service.color};">
-        ${icon(service.icon, 24, 'card__icon')}
-      </div>
-      <h3 class="card__title">${service.title}</h3>
-      <p class="card__text">${service.short}</p>
-    </article>
-  `;
-}
-
-function _disciplinePreview(d, index) {
-  const staggerClass = `stagger-${Math.min(index + 1, 3)}`;
-  return `
-    <div class="card card--flat animate-slide-up ${staggerClass}" style="border-left: 3px solid ${d.color}; padding-left: var(--space-5);">
-      <div style="color:${d.color}; margin-bottom: var(--space-3);">${icon(d.icon, 28)}</div>
-      <h3 class="card__title" style="font-size: var(--text-xl);">${d.title}</h3>
-      <p class="card__text">${d.tagline}</p>
-      <div class="tool-pills">
-        ${d.tools.slice(0, 3).map((t) => `<span class="tool-pill">${t}</span>`).join('')}
-      </div>
-    </div>
-  `;
-}
-
-function _valueItem(v, index) {
-  const staggerClass = `stagger-${Math.min(index + 1, 4)}`;
-  return `
-    <div class="card card--flat animate-slide-up ${staggerClass}" style="text-align:center;">
-      <div style="display:flex; justify-content:center; margin-bottom: var(--space-4);">
-        <div style="width:48px; height:48px; border-radius:50%; background:rgba(0,119,204,0.08); display:flex; align-items:center; justify-content:center; color:var(--color-secondary);">
-          ${icon(v.icon, 22)}
+    <div class="section-band section-band--blue">
+      <div class="section-band__inner">
+        <div class="section-header">
+          <span class="section-eyebrow" style="color:rgba(255,255,255,0.7);">Our team</span>
+          <h2 class="section-title section-title--on-dark">Three disciplines. One delivery.</h2>
+          <p class="section-lead section-lead--on-dark">
+            Every engagement brings together Designers, Architects, and Engineers
+            in a single cohesive team.
+          </p>
+        </div>
+        <div class="tile-grid">
+          ${disciplines.map(d => `
+            <div class="tile tile--blue">
+              <div class="tile__icon" aria-hidden="true">${EMOJIS[d.icon] || '◆'}</div>
+              <div class="tile__title">${escapeHtml(d.title)}</div>
+              <p class="tile__body">${escapeHtml(d.description)}</p>
+              ${d.skills ? `
+                <div style="display:flex;flex-wrap:wrap;gap:var(--space-2);margin-top:var(--space-3);">
+                  ${d.skills.slice(0, 3).map(sk => `<span class="badge" style="background:rgba(255,255,255,0.15);color:#fff;">${escapeHtml(sk)}</span>`).join('')}
+                </div>` : ''}
+            </div>`).join('')}
         </div>
       </div>
-      <h4 style="font-size:var(--text-base); font-weight:var(--font-semi); color:var(--color-text-dark); margin-bottom:var(--space-2);">${v.title}</h4>
-      <p style="font-size:var(--text-sm); color:var(--color-text-light); margin:0;">${v.text}</p>
-    </div>
-  `;
+    </div>`;
+}
+
+/* ── Feature row ─────────────────────────── */
+function featureRow(eyebrow, title, body, emoji, reversed) {
+  return `
+    <div class="feature-row${reversed ? ' feature-row--reversed' : ''}">
+      <div class="feature-row__content">
+        <span class="section-eyebrow">${escapeHtml(eyebrow)}</span>
+        <h2 class="feature-row__title">${escapeHtml(title)}</h2>
+        <p class="feature-row__body">${escapeHtml(body)}</p>
+        <a href="${reversed ? '#contact' : '#services'}" class="inline-link"
+           data-section="${reversed ? 'contact' : 'services'}">
+          ${reversed ? 'Register interest in Phase 2' : 'Explore our services'} ${ARROW}
+        </a>
+      </div>
+      <div class="feature-row__visual" aria-hidden="true">${emoji}</div>
+    </div>`;
+}
+
+/* ── Values band ─────────────────────────── */
+function valuesBand() {
+  const values = [
+    { em:'🎯', title:'Outcome-driven',  body:'We measure success by your results, not our activity.' },
+    { em:'🔧', title:'Modular',         body:'Systems you can extend without touching what works.' },
+    { em:'📖', title:'Transparent',     body:'Open config, documented decisions — no black-box delivery.' },
+    { em:'🚀', title:'Scalable',        body:'Architecture that grows with your ambitions.' },
+  ];
+  return `
+    <div class="section-band section-band--subtle">
+      <div class="section-band__inner">
+        <div class="section-header section-header--center">
+          <span class="section-eyebrow">Our values</span>
+          <h2 class="section-title">How we work</h2>
+        </div>
+        <div class="tile-grid tile-grid--4col">
+          ${values.map(v => `
+            <div class="tile">
+              <div class="tile__icon" aria-hidden="true">${v.em}</div>
+              <div class="tile__title">${v.title}</div>
+              <p class="tile__body">${v.body}</p>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ── CTA band ────────────────────────────── */
+function ctaBand() {
+  return `
+    <div class="section-band section-band--blue">
+      <div class="section-band__inner cta-row">
+        <div class="cta-row__text">
+          <h2>Ready to start your project?</h2>
+          <p>Let's discuss what you need to build next.</p>
+        </div>
+        <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;">
+          <a href="#contact" class="btn btn--inverse btn--lg" data-section="contact">
+            Get in touch ${ARROW}
+          </a>
+          <a href="#services" class="btn btn--ghost btn--lg" data-section="services"
+             style="color:#fff;border:1px solid rgba(255,255,255,0.4);">
+            View services
+          </a>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ── Footer ──────────────────────────────── */
+function footer() {
+  const year = new Date().getFullYear();
+  return `
+    <footer class="site-footer" role="contentinfo">
+      <div class="site-footer__inner">
+        <div>
+          <div class="site-footer__brand">${escapeHtml(SITE.company.name)}</div>
+          <p class="site-footer__copy">
+            Technology Services &amp; AI Automation<br>
+            ${escapeHtml(SITE.contact?.address || 'Bengaluru, India')}
+          </p>
+        </div>
+        <nav class="site-footer__nav" aria-label="Footer navigation">
+          <div>
+            <div class="site-footer__nav-group-title">Navigation</div>
+            ${SITE.navigation.map(n =>
+              `<a href="#${n.id}" class="site-footer__nav-link" data-section="${n.id}">${n.label}</a>`
+            ).join('')}
+          </div>
+          <div>
+            <div class="site-footer__nav-group-title">Services</div>
+            <a href="#services" class="site-footer__nav-link" data-section="services">Consulting</a>
+            <a href="#services" class="site-footer__nav-link" data-section="services">AI Automation</a>
+            <a href="#services" class="site-footer__nav-link" data-section="services">Cloud Architecture</a>
+            <a href="#services" class="site-footer__nav-link" data-section="services">Engineering</a>
+          </div>
+          <div>
+            <div class="site-footer__nav-group-title">Company</div>
+            <a href="#home"    class="site-footer__nav-link" data-section="home">About us</a>
+            <a href="#support" class="site-footer__nav-link" data-section="support">Support</a>
+            <a href="#contact" class="site-footer__nav-link" data-section="contact">Contact</a>
+          </div>
+          <div>
+            <div class="site-footer__nav-group-title">Connect</div>
+            ${SITE.contact?.linkedin ? `<a href="${escapeHtml(SITE.contact.linkedin)}" class="site-footer__nav-link" target="_blank" rel="noopener">LinkedIn</a>` : ''}
+            ${SITE.contact?.twitter  ? `<a href="${escapeHtml(SITE.contact.twitter)}"  class="site-footer__nav-link" target="_blank" rel="noopener">Twitter</a>`  : ''}
+            ${SITE.contact?.github   ? `<a href="${escapeHtml(SITE.contact.github)}"   class="site-footer__nav-link" target="_blank" rel="noopener">GitHub</a>`   : ''}
+          </div>
+        </nav>
+        <div>
+          <a href="#contact" class="btn btn--primary btn--sm" data-section="contact">
+            Get in touch ${ARROW}
+          </a>
+        </div>
+      </div>
+      <div class="site-footer__legal">
+        <span>&copy; ${year} ${escapeHtml(SITE.company.name)}. All rights reserved.</span>
+        <a href="#home" class="site-footer__legal-link">Privacy</a>
+        <a href="#home" class="site-footer__legal-link">Terms</a>
+        <a href="#home" class="site-footer__legal-link">Accessibility</a>
+      </div>
+    </footer>`;
 }

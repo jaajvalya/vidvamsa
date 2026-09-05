@@ -1,130 +1,158 @@
 /**
- * Vidvamsa — Services Section
+ * Services Section
  * src/js/sections/services.js
- *
- * @module sections/services
  */
+import { escapeHtml } from '../utils.js';
+import { SERVICES } from '../config.js';
 
-import { SERVICES, SITE }                       from '../config.js';
-import { renderServiceCard, renderProcessStep, renderFooter } from '../renderer.js';
+const ARROW = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+  aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/>
+  <polyline points="12 5 19 12 12 19"/></svg>`;
 
-/* ── Public ──────────────────────────────────── */
+const EMOJIS = {
+  cpu:'⚙️', zap:'⚡', cloud:'☁️', code:'💻',
+  database:'🗄️', 'refresh-cw':'🔄', shield:'🛡️', layers:'🗂️',
+};
 
-export function mountServices() {
-  const el = document.getElementById('section-services');
-  if (!el) return;
-  el.innerHTML = _buildServices();
+export function mountServices(el) {
+  el.innerHTML = `
+    ${pageHero()}
+    ${serviceGrid()}
+    ${aiSpotlight()}
+    ${processSteps()}
+    ${ctaBand()}
+  `;
 }
 
-/* ── Private ─────────────────────────────────── */
-
-function _buildServices() {
+function pageHero() {
   return `
-    <!-- Page Header -->
-    <div class="page-header-band">
-      <div class="page-header-band__inner">
-        <div class="page-header-band__eyebrow">What We Offer</div>
-        <h1 class="page-header-band__title">Our Services</h1>
-        <p class="page-header-band__desc">
-          Six practice areas. One integrated team. Delivering outcomes across
-          the full technology lifecycle.
+    <section class="page-hero">
+      <div class="page-hero__inner">
+        <span class="section-eyebrow section-eyebrow--on-dark">What we offer</span>
+        <h1 class="page-hero__title">Services &amp; capabilities</h1>
+        <p class="page-hero__lead">
+          From strategic architecture to production engineering — complete, API-ready
+          solutions built for longevity and your AI future.
         </p>
       </div>
-    </div>
+    </section>`;
+}
 
-    <!-- All Services Grid -->
-    <section class="section-container" aria-labelledby="all-services-heading">
-      <div class="section-header">
-        <div class="section-eyebrow">Practice Areas</div>
-        <h2 id="all-services-heading" class="section-title">
-          End-to-end <em>technology capability</em>
-        </h2>
-        <p class="section-lead">
-          Whether you need a single specialist or a complete delivery team,
-          we have the depth and breadth to help you succeed.
-        </p>
-      </div>
-      <div class="grid-3">
-        ${SERVICES.items.map((s, i) => renderServiceCard(s, i)).join('')}
-      </div>
-    </section>
-
-    <!-- AI Spotlight -->
-    <section
-      style="background:var(--color-surface); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border);"
-      aria-labelledby="ai-spotlight-heading"
-    >
-      <div class="section-container">
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap: var(--space-12); align-items:center;">
-          <div>
-            <div class="section-eyebrow">AI Platform (Coming Soon)</div>
-            <h2 id="ai-spotlight-heading" class="section-title">
-              The next frontier:<br><em>AI-native operations</em>
-            </h2>
-            <p style="color:var(--color-text-medium); line-height:var(--leading-relaxed); margin-bottom:var(--space-6);">
-              We are building a proprietary AI automation platform that connects
-              your data, workflows, and models into a single intelligent layer —
-              designed to evolve as AI capabilities advance.
-            </p>
-            <ul class="card__list">
-              <li class="card__list-item">Drag-and-drop AI workflow builder</li>
-              <li class="card__list-item">Pre-built LLM connectors</li>
-              <li class="card__list-item">Observability &amp; governance dashboard</li>
-              <li class="card__list-item">FastAPI-powered integration layer</li>
-            </ul>
-          </div>
-          <div style="display:flex; gap:var(--space-4); flex-direction:column;">
-            ${_aiFeatureItem('zap',      '#00A8E8', 'Workflow Automation',   'Visual builder for complex AI pipelines with no-code and code-first modes.')}
-            ${_aiFeatureItem('database', '#0077CC', 'Data Intelligence',     'Connect any data source and apply ML transformations in real-time.')}
-            ${_aiFeatureItem('shield',   '#1A3C6E', 'AI Governance',         'Audit trails, model versioning and compliance guardrails out of the box.')}
+function serviceGrid() {
+  const items = SERVICES.items || [];
+  return `
+    <div class="section-band section-band--white">
+      <div class="section-band__inner">
+        <div class="section-header">
+          <span class="section-eyebrow">Core services</span>
+          <h2 class="section-title">Everything you need to build</h2>
+        </div>
+        <div class="tile-grid tile-grid--4col">
+          ${items.map(s => `
+            <article class="tile" id="svc-${escapeHtml(s.id)}">
+              <div class="tile__icon" aria-hidden="true">${EMOJIS[s.icon] || '◆'}</div>
+              <div class="tile__title">${escapeHtml(s.title)}</div>
+              <p class="tile__body">${escapeHtml(s.short || s.description)}</p>
+              ${(s.highlights || []).length ? `
+                <ul style="list-style:none;padding:0;margin:var(--space-3) 0 0;flex:1;">
+                  ${s.highlights.slice(0, 3).map(h => `
+                    <li style="display:flex;align-items:flex-start;gap:var(--space-2);
+                               font-size:var(--text-xs);color:var(--color-text-secondary);
+                               padding:var(--space-2) 0;border-bottom:1px solid var(--color-border);">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                           stroke="var(--color-blue-60)" stroke-width="2.5"
+                           stroke-linecap="round" stroke-linejoin="round"
+                           aria-hidden="true" style="margin-top:1px;flex-shrink:0;">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                      ${escapeHtml(h)}
+                    </li>`).join('')}
+                </ul>` : ''}
+              <a href="#contact" class="tile__link" data-section="contact"
+                 aria-label="Enquire about ${escapeHtml(s.title)}">
+                Enquire now ${ARROW}
+              </a>
+            </article>`).join('')}
+          <div class="tile tile--dark">
+            <div class="tile__tag">Phase 2</div>
+            <div class="tile__icon" aria-hidden="true">🤖</div>
+            <div class="tile__title">AI Platform &amp; FastAPI</div>
+            <p class="tile__body">Production AI inference, agent workflows, and RESTful APIs — built on your Phase 1 foundation with zero replatforming.</p>
+            <a href="#contact" class="tile__link" data-section="contact">
+              Enquire about Phase 2 ${ARROW}
+            </a>
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- Process -->
-    <section class="section-container" aria-labelledby="process-heading">
-      <div class="section-header section-header--centered">
-        <div class="section-eyebrow">How We Deliver</div>
-        <h2 id="process-heading" class="section-title">
-          Our <em>delivery process</em>
-        </h2>
-        <p class="section-lead">
-          A proven four-step model that keeps projects on track, on budget
-          and aligned with your goals.
-        </p>
-      </div>
-      <div class="process-steps">
-        ${SERVICES.process.map(renderProcessStep).join('')}
-      </div>
-    </section>
-
-    ${renderFooter(SITE.contact, new Date().getFullYear())}
-  `;
+    </div>`;
 }
 
-function _aiFeatureItem(iconName, color, title, text) {
+function aiSpotlight() {
   return `
-    <div style="display:flex; gap:var(--space-4); align-items:flex-start;">
-      <div style="width:42px;height:42px;border-radius:var(--radius-md);background:${color}18;color:${color};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          ${_iconPath(iconName)}
-        </svg>
+    <div class="feature-row feature-row--dark" style="border-top:1px solid var(--color-dark-border);">
+      <div class="feature-row__content">
+        <span class="section-eyebrow section-eyebrow--on-dark">Phase 2 — coming next</span>
+        <h2 class="feature-row__title">AI Platform &amp; FastAPI integration</h2>
+        <p class="feature-row__body">
+          Our Phase 2 roadmap delivers a production-ready AI inference platform,
+          agent orchestration, and RESTful FastAPI services — all built on the
+          foundation we create today. No replatforming required.
+        </p>
+        <div style="display:flex;gap:var(--space-3);flex-wrap:wrap;margin-top:var(--space-2);">
+          <a href="#contact" class="btn btn--primary" data-section="contact">
+            Register interest ${ARROW}
+          </a>
+          <a href="#support" class="btn btn--ghost" data-section="support"
+             style="color:var(--color-blue-40);border:1px solid var(--color-dark-border);">
+            Learn more
+          </a>
+        </div>
       </div>
-      <div>
-        <div style="font-size:var(--text-base);font-weight:var(--font-semi);color:var(--color-text-dark);margin-bottom:var(--space-1);">${title}</div>
-        <div style="font-size:var(--text-sm);color:var(--color-text-light);line-height:var(--leading-relaxed);">${text}</div>
-      </div>
-    </div>
-  `;
+      <div class="feature-row__visual" aria-hidden="true">🤖</div>
+    </div>`;
 }
 
-// Minimal icon paths (inline, no dep)
-function _iconPath(name) {
-  const paths = {
-    zap:      '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
-    database: '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>',
-    shield:   '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
-  };
-  return paths[name] || '';
+function processSteps() {
+  const steps = [
+    { n:'01', t:'Discovery',    b:'Structured workshops to learn your context, constraints, and goals.' },
+    { n:'02', t:'Architecture', b:'Blueprint with clear extension points and documented decisions.' },
+    { n:'03', t:'Design',       b:'Validated prototypes and a component library before code is written.' },
+    { n:'04', t:'Engineering',  b:'Modular, config-driven code — tested and API-ready from day one.' },
+    { n:'05', t:'Handover',     b:'Full documentation, runbooks, and a knowledge-transfer session.' },
+    { n:'06', t:'Support',      b:'SLA-backed support and a clear path to Phase 2 AI integration.' },
+  ];
+  return `
+    <div class="section-band section-band--subtle">
+      <div class="section-band__inner">
+        <div class="section-header">
+          <span class="section-eyebrow">How we work</span>
+          <h2 class="section-title">Our delivery process</h2>
+          <p class="section-lead">A repeatable, transparent process that keeps you in control at every stage.</p>
+        </div>
+        <div class="steps" style="grid-template-columns:repeat(3,1fr);">
+          ${steps.map(s => `
+            <div class="step">
+              <span class="step__num">${s.n}</span>
+              <div class="step__title">${escapeHtml(s.t)}</div>
+              <p class="step__body">${escapeHtml(s.b)}</p>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+}
+
+function ctaBand() {
+  return `
+    <div class="section-band section-band--blue">
+      <div class="section-band__inner cta-row">
+        <div class="cta-row__text">
+          <h2>Have a project in mind?</h2>
+          <p>Talk to our team and receive a tailored approach document within 48 hours.</p>
+        </div>
+        <a href="#contact" class="btn btn--inverse btn--lg" data-section="contact">
+          Get in touch ${ARROW}
+        </a>
+      </div>
+    </div>`;
 }
